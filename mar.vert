@@ -9,17 +9,6 @@ uniform int tipo_mar; // calmo (1), agitado (2) ou com ondas altas (3)
 // duas cosine waves em y
 // duas ripple waves
 
-float onda_seno(float x) { 
-  float f = 0.0f;
-  for (int i = 0; i < 4; ++i) {
-    //
-    f = f + pow(float((5.0f - float(i)) * sin(x - 0.4f * float(i))), 20.0f);
-  }
-  f = f / float(10);
-  return f;
-}
-
-
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
   r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex));
@@ -27,12 +16,54 @@ void main() {
   
   vec4 p = gl_Vertex;
   
-  if (tipo_mar == 1) {
-    p.z = p.z + onda_seno(p.x) + onda_seno(p.y);
-  }
+  if ( tipo_mar == 1 ) {
 
-	
-    // Set the position of the current vertex 
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    // funçoes seno em y
+    p.y = p.y + pow( (0.40 * ( sin( p.x + tempo * 1.0 ) + sin( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (0.20 * ( sin( p.x + tempo * 2.0 ) + sin( p.z + tempo ) ) ), 2.0);
+    // funçoes seno em x
+    p.x = p.x + pow( (0.10 * ( sin( p.y + tempo * 1.5 ) + sin( p.z + tempo ) ) ), 5.0);
+    p.x = p.x + pow( (0.05 * ( sin( p.y + tempo * 2.5 ) + sin( p.z + tempo ) ) ), 10.0) ;
+    // funçoes cosseno em y
+    p.y = p.y + pow( (0.40 * ( cos( p.x + tempo * 1.0 ) + cos( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (0.20 * ( cos( p.x + tempo * 2.0 ) + cos( p.z + tempo ) ) ), 2.0);
+    // funçoes cosseno em x
+    p.x = p.x + pow( (0.10 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 5.0);
+    p.x = p.x + pow( (0.05 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
+        
+  }
+  if ( tipo_mar == 2 ) {
+    // funçoes seno em y
+    p.y = p.y + pow( (1.0 * ( sin( p.x + tempo * 1.0 ) + sin( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (0.50 * ( sin( p.x + tempo * 1.6 ) + sin( p.z + tempo ) ) ), 1.0);
+    // funçoes seno em x
+    p.x = p.x + pow( (0.30 * ( sin( p.y + tempo * 1.5 ) + sin( p.z + tempo ) ) ), 1.0);
+    p.x = p.x + pow( (0.20 * ( sin( p.y + tempo * 2.5 ) + sin( p.z + tempo ) ) ), 10.0) ;
+    // funçoes cosseno em y
+    p.y = p.y + pow( (0.7 * ( cos( p.x + tempo * 1.0 ) + cos( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (0.3 * ( cos( p.x + tempo * 2.0 ) + cos( p.z + tempo ) ) ), 1.0);
+    // funçoes cosseno em x
+    p.x = p.x + pow( (0.10 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 1.0);
+    p.x = p.x + pow( (0.05 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
+    
+  }
+  if ( tipo_mar == 3 ) {
+    // funçoes seno em y
+    p.y = p.y + pow( (0.9 * ( sin( p.x + tempo * 1.5 ) + sin( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (0.7 * ( sin( p.x + tempo * 1.8 ) + sin( p.z + tempo ) ) ), 2.0);
+    // funçoes seno em x
+    p.x = p.x + pow( (0.5 * ( sin( p.y + tempo * 1.5 ) + sin( p.z + tempo ) ) ), 5.0);
+    p.x = p.x + pow( (0.3 * ( sin( p.y + tempo * 2.5 ) + sin( p.z + tempo ) ) ), 10.0) ;
+    // funçoes cosseno em y
+    p.y = p.y + pow( (0.9 * ( cos( p.x + tempo * 1.0 ) + cos( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (0.6 * ( cos( p.x + tempo * 2.0 ) + cos( p.z + tempo ) ) ), 2.0);
+    // funçoes cosseno em x
+    p.x = p.x + pow( (0.2 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 5.0);
+    p.x = p.x + pow( (0.1 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
+
+ }
+
+  // Set the position of the current vertex 
+  gl_Position = gl_ModelViewProjectionMatrix * p + ftransform(); //gl_Vertex;
 }
 

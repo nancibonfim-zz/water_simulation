@@ -51,7 +51,7 @@ int res = 40; // resoluçao
 
 float delta = 0.01;
 
-float t, amplitude, frequencia;
+float t = 0.0;
 
 int situacao_mar = 1; // calmo (1), agitado (2) ou com ondas altas (3)
 
@@ -163,10 +163,9 @@ static void display(void) {
     glUseProgram(shaderProg);
 
     glUniform1i(getUniLoc(shaderProg, "tipo_mar"), situacao_mar);
+    
+    glUniform1f(getUniLoc(shaderProg, "tempo"), t);
 
-    //xxx  
-    // GLint texture_location = glGetUniformLocation(shaderProg, "texture_color");
-    // glUniform1i(texture_location, 0);
   }
 
   DesenhaBase(res);
@@ -184,22 +183,9 @@ static void display(void) {
 
    =======================================================================*/
 void animation() {
-  
-  amplitude += delta;
-  if (amplitude > 0.4)
-    delta = -0.01;
-  if (amplitude < 0.001)
-    delta = 0.01;
 
-  amplitude = 0.4f;
+  t += 0.05;
 
-  if (frequencia > 2.0)
-    frequencia = -0.1;
-  if (frequencia < 0.01)
-    frequencia = 0.1;
-
-  t += 0.02;
-      
   glutPostRedisplay();
 }
 

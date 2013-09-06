@@ -134,8 +134,8 @@ static void display(void) {
 
   GLfloat KaMat[4] 	= { 0.3, 0.3, 0.3, 1.0}; 
   GLfloat KdMat[4] 	= { 0.3, 0.3, 1.0, 1.0}; 
-  GLfloat KeMat[4] 	= { 0.0, 0.0, 1.0, 1.0}; 
-  GLfloat Shine[1] 	= { 80.0}; 
+  GLfloat KeMat[4] 	= { 0.0, 1.0, 0.0, 1.0}; 
+  GLfloat Shine[1] 	= { 10.0}; 
 
   glClearColor (0.0,0.0,0.0,1.0);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -161,6 +161,7 @@ static void display(void) {
 
   if (shader) {
     glUseProgram(shaderProg);
+    //    glUniform1fv(getUniLoc(shaderProg, "diffuse"), KdMat);
 
     //xxx  
     // GLint texture_location = glGetUniformLocation(shaderProg, "texture_color");
@@ -246,6 +247,7 @@ static void reshape(int wid, int ht) {
   glLoadIdentity();
   gluPerspective (60, aspect, 1.0, 100.0);
   glMatrixMode (GL_MODELVIEW);
+  glLoadIdentity();
 
 }
 
@@ -257,8 +259,8 @@ void initTexture(IplImage*  img) {
   glBindTexture(GL_TEXTURE_2D, texName[0]); // faz o bind da textura com seu array
   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); // set texture environment parameters
   
-  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //xxx near
-  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //xxx near
+  glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
   // Setando parametros que repetem a textura
   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
@@ -275,7 +277,7 @@ void initTexture(IplImage*  img) {
    =======================================================================*/
 int main( int argc, char **argv) {
   
-  char *filename = (char*)"tex5.jpg"; // imagem da textura
+  char *filename = (char*)"water.jpg"; // imagem da textura
   char *shaderFile = (char*)"mar"; // arquivo do shader
   IplImage*   img     = NULL; // instancia para armazenar arquivo da textura
 

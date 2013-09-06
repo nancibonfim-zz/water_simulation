@@ -1,12 +1,15 @@
 varying vec3 r;
-uniform sampler2D envMapText;
+//varying vec4 diffuse;
+uniform sampler2D text;
 
 void main() {
 	
-	vec2 coord = vec2(r.x, r.y);
-	
-	vec4 texel = texture2D(envMapText, coord.st);
+	vec4 texel = texture2D(text, r.st);
+
+    vec3 L = normalize(gl_LightSource[0].position.xyz - r);   
+
 	
     // Set the output color of our current pixel
-	gl_FragColor = texel;
+    //gl_LightSource[0]
+    gl_FragColor = (gl_FrontMaterial.ambient + gl_FrontMaterial.diffuse) * texel;
 }

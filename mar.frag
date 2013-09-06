@@ -1,5 +1,4 @@
 varying vec3 r;
-//varying vec4 diffuse;
 uniform sampler2D text;
 
 void main() {
@@ -10,6 +9,6 @@ void main() {
 
 	
     // Set the output color of our current pixel
-    //gl_LightSource[0]
-    gl_FragColor = (gl_FrontMaterial.ambient + gl_FrontMaterial.diffuse) * texel;
+    //gl_LightSource[0] gl_FrontMaterial
+    gl_FragColor = (gl_LightSource[0].ambient + gl_FrontMaterial.diffuse) * texel;
 }

@@ -53,6 +53,8 @@ float delta = 0.01;
 
 float t, amplitude, frequencia;
 
+int situacao_mar = 1; // calmo (1), agitado (2) ou com ondas altas (3)
+
 /* =======================================================================
    init
    =======================================================================*/
@@ -79,8 +81,6 @@ void init(void) {
   glLightfv(GL_LIGHT0, GL_DIFFUSE, 	KdLig);
   glLightfv(GL_LIGHT0, GL_AMBIENT, 	KaLig);
   glLightfv(GL_LIGHT0, GL_SPECULAR, 	KeLig);
-
-  //  glDepthFunc(GL_LESS);
 
 }
 
@@ -154,14 +154,15 @@ static void display(void) {
     
   DesenhaEixos();
 
-  glActiveTexture(GL_TEXTURE0); //xxx
+  glActiveTexture(GL_TEXTURE0);
   glEnable(GL_TEXTURE_2D);
 
   glBindTexture(GL_TEXTURE_2D, texName[0]);
 
   if (shader) {
     glUseProgram(shaderProg);
-    //    glUniform1fv(getUniLoc(shaderProg, "diffuse"), KdMat);
+
+    glUniform1i(getUniLoc(shaderProg, "tipo_mar"), situacao_mar);
 
     //xxx  
     // GLint texture_location = glGetUniformLocation(shaderProg, "texture_color");
@@ -229,6 +230,18 @@ static void key(unsigned char keyPressed, int x, int y) {
     else
       printf("Shader OFF\n");
     break;
+  case '1':
+    situacao_mar = 1;
+    printf("Mar calmo\n");
+    break;
+  case '2':
+    situacao_mar = 2;
+    printf("Mar agitado\n");
+    break;
+  case '3':
+    situacao_mar = 3;
+    printf("Tempestade com ondas altas\n");
+    break;
   default:
     break;
   }
@@ -277,7 +290,7 @@ void initTexture(IplImage*  img) {
    =======================================================================*/
 int main( int argc, char **argv) {
   
-  char *filename = (char*)"water.jpg"; // imagem da textura
+  char *filename = (char*)"tex5.jpg"; // imagem da textura
   char *shaderFile = (char*)"mar"; // arquivo do shader
   IplImage*   img     = NULL; // instancia para armazenar arquivo da textura
 

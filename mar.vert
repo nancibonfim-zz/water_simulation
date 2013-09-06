@@ -2,6 +2,8 @@ varying vec3 r;
 varying vec3 normal;
 uniform float tempo;
 uniform int tipo_mar; // calmo (1), agitado (2) ou com ondas altas (3)
+varying float f;
+varying float z;
 
 // duas sine waves em x
 // duas sine waves em y
@@ -30,7 +32,6 @@ void main() {
     // funçoes cosseno em x
     p.x = p.x + pow( (0.10 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 5.0);
     p.x = p.x + pow( (0.05 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
-        
   }
   if ( tipo_mar == 2 ) {
     // funçoes seno em y
@@ -60,7 +61,8 @@ void main() {
     // funçoes cosseno em x
     p.x = p.x + pow( (0.2 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 5.0);
     p.x = p.x + pow( (0.1 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
-
+ 
+  
  }
 
   // Set the position of the current vertex 

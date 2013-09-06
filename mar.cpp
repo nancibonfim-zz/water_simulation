@@ -59,13 +59,12 @@ int situacao_mar = 1; // calmo (1), agitado (2) ou com ondas altas (3)
    init
    =======================================================================*/
 void init(void) {
+  GLfloat KaLig[4] = { 0.3, 0.3, 0.3, 1.0 };
+  GLfloat KdLig[4] = { 1.0, 1.0, 1.0, 1.0 }; 
+  GLfloat KeLig[4] = { 1.0, 1.0, 1.0, 1.0 }; 
+  GLfloat pos[4]   = { 0.0, 0.0, 2.0, 1.0 }; 
 
-  GLfloat KaLig[4] = { 0.3, 0.3, 0.3, 1.0}; 
-  GLfloat KdLig[4] = { 1.0, 1.0, 1.0, 1.0}; 
-  GLfloat KeLig[4] = { 1.0, 1.0, 1.0, 1.0}; 
-  GLfloat pos[4] 	 = { 0.0, 3.0, 0.0, 1.0}; 
-
-  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glClearColor(0.0, 0.7, 1.0, 0.0);
 	
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
@@ -132,14 +131,12 @@ void DesenhaBase(int res) {
 static void display(void) {
   
 
-  GLfloat KaMat[4] 	= { 0.3, 0.3, 0.3, 1.0}; 
-  GLfloat KdMat[4] 	= { 0.3, 0.3, 1.0, 1.0}; 
-  GLfloat KeMat[4] 	= { 0.0, 1.0, 0.0, 1.0}; 
-  GLfloat Shine[1] 	= { 10.0}; 
+  GLfloat KaMat[4] 	= { 0.0, 0.3, 0.6, 1.0 };
+  GLfloat KdMat[4] 	= { 0.2, 0.3, 0.5, 1.0 }; 
+  GLfloat KeMat[4] 	= { 1.0, 1.0, 1.0, 1.0 }; 
+  GLfloat Shine[1] 	= { 80.0 }; 
 
-  glClearColor (0.0,0.0,0.0,1.0);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
   glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, 	KaMat);
   glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, 	KdMat);

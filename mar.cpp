@@ -57,9 +57,30 @@ float t, amplitude, frequencia;
    init
    =======================================================================*/
 void init(void) {
+
+  GLfloat KaLig[4] = { 0.3, 0.3, 0.3, 1.0}; 
+  GLfloat KdLig[4] = { 1.0, 1.0, 1.0, 1.0}; 
+  GLfloat KeLig[4] = { 1.0, 1.0, 1.0, 1.0}; 
+  GLfloat pos[4] 	 = { 0.0, 3.0, 0.0, 1.0}; 
+
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+	
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+
   glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
+
   glShadeModel(GL_SMOOTH);
+	
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+	
+  glLightfv(GL_LIGHT0, GL_POSITION, 	pos);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, 	KdLig);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, 	KaLig);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, 	KeLig);
+
+  //  glDepthFunc(GL_LESS);
 
 }
 
@@ -109,8 +130,23 @@ void DesenhaBase(int res) {
    display
    =======================================================================*/
 static void display(void) {
+  
+
+  GLfloat KaMat[4] 	= { 0.3, 0.3, 0.3, 1.0}; 
+  GLfloat KdMat[4] 	= { 0.3, 0.3, 1.0, 1.0}; 
+  GLfloat KeMat[4] 	= { 0.0, 0.0, 1.0, 1.0}; 
+  GLfloat Shine[1] 	= { 80.0}; 
+
   glClearColor (0.0,0.0,0.0,1.0);
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, 	KaMat);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, 	KdMat);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, 	KeMat);
+  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, 	Shine);
+
+
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
@@ -239,7 +275,7 @@ void initTexture(IplImage*  img) {
    =======================================================================*/
 int main( int argc, char **argv) {
   
-  char *filename = (char*)"water.jpg"; // imagem da textura
+  char *filename = (char*)"tex5.jpg"; // imagem da textura
   char *shaderFile = (char*)"mar"; // arquivo do shader
   IplImage*   img     = NULL; // instancia para armazenar arquivo da textura
 

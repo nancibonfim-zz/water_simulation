@@ -6,13 +6,11 @@ varying vec3 normal;
 void main() {
 	
   vec4 texel = texture2D(text, r.st);
-
-  vec3 L = normalize(gl_LightSource[0].position.xyz - r);   
-  
+ 
   /* Iluminaçao*/
   vec3 light = normalize(gl_LightSource[0].position.xyz - r);   
   vec3 eye = normalize(-r); // we are in Eye Coordinates, so EyePos is (0,0,0)  
-  vec3 reflexao = normalize(-reflect(L, normal));  
+  vec3 reflexao = normalize(-reflect(light, normal));  
 
   // componente ambiente
   vec4 l_amb = gl_FrontLightProduct[0].ambient;

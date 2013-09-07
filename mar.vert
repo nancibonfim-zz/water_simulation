@@ -17,7 +17,8 @@ void main() {
   normal = normalize(gl_NormalMatrix * gl_Normal);
   
   vec4 p = gl_Vertex;
-  
+ 
+  /* Funçoes de onda*/
   if ( tipo_mar == 1 ) {
 
     // funçoes seno em y
@@ -31,7 +32,12 @@ void main() {
     p.y = p.y + pow( (0.20 * ( cos( p.x + tempo * 2.0 ) + cos( p.z + tempo ) ) ), 2.0);
     // funçoes cosseno em x
     p.x = p.x + pow( (0.10 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 5.0);
-    p.x = p.x + pow( (0.05 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
+    p.x = p.x + pow( (0.05 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0);
+
+
+    //    p.y = p.y + 1.01*((sin(p.z  + tempo)) +  (sin(p.x  + tempo)));
+    p.x = p.x + 1.0 * (((sin(p.z  + tempo ))) +  (sin(p.y  + tempo * 0.5)));
+  
   }
   if ( tipo_mar == 2 ) {
     // funçoes seno em y
@@ -61,11 +67,9 @@ void main() {
     // funçoes cosseno em x
     p.x = p.x + pow( (0.2 * ( cos( p.y + tempo * 1.5 ) + cos( p.z + tempo ) ) ), 5.0);
     p.x = p.x + pow( (0.1 * ( cos( p.y + tempo * 2.5 ) + cos( p.z + tempo ) ) ), 10.0) ;
- 
   
  }
 
   // Set the position of the current vertex 
   gl_Position = gl_ModelViewProjectionMatrix * p + ftransform(); //gl_Vertex;
 }
-

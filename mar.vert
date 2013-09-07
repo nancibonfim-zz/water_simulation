@@ -41,7 +41,7 @@ void main() {
   }
   if ( tipo_mar == 2 ) {
     // funçoes seno em y
-    p.y = p.y + pow( (1.0 * ( sin( p.x + tempo * 1.0 ) + sin( p.z + tempo ) ) ), 1.0);
+    p.y = p.y + pow( (2.0 * ( sin( p.x + tempo * 1.0 ) + sin( p.z + tempo ) ) ), 1.0);
     p.y = p.y + pow( (0.50 * ( sin( p.x + tempo * 1.6 ) + sin( p.z + tempo ) ) ), 1.0);
     // funçoes seno em x
     p.x = p.x + pow( (0.30 * ( sin( p.y + tempo * 1.5 ) + sin( p.z + tempo ) ) ), 1.0);

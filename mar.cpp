@@ -55,6 +55,10 @@ float t = 0.0;
 
 int situacao_mar = 1; // calmo (1), agitado (2) ou com ondas altas (3)
 
+float posx = 20.0, posy = 10.0, posz = 2.0;
+float eyex = 0.0, eyey = 0.0, eyez = 0.0;
+
+
 /* =======================================================================
    init
    =======================================================================*/
@@ -64,8 +68,11 @@ void init(void) {
   GLfloat KeLig[4] = { 1.0, 1.0, 1.0, 1.0 }; 
   GLfloat pos[4]   = { 0.0, 0.0, 2.0, 1.0 }; 
 
-  glClearColor(0.0, 0.7, 1.0, 0.0);
+  //  glClearColor(0.0, 0.7, 1.0, 0.0);
 	
+  glClearColor(0.0, 0.0, 0.3, 0.0);
+  
+
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
 
@@ -231,6 +238,32 @@ static void key(unsigned char keyPressed, int x, int y) {
   case '3':
     situacao_mar = 3;
     printf("Tempestade com ondas altas\n");
+    break;
+  case 'd':
+  case 'D':
+    // if (eyex < 10.0)
+    //   eyex += 1.0;
+    // else
+    //   eyex -= 1.0;
+    //posz += 1.0;
+    //    posy += 1.0;
+    posy += 1.0;
+    printf("posicao: %f %f %f\n", posx, posy, posz);
+    
+    break;
+  case 'a':
+  case 'A':
+    //    posz -= 1.0;
+    posy -= 1.0;
+    //    posx -= 1.0;
+    
+    
+   // if (eyex > 0.0)
+    //   eyex -= 1.0;
+    // else
+    //   eyex += 1.0;
+    //    posz -= 2.0;
+    // posy -= 2.0;
     break;
   default:
     break;

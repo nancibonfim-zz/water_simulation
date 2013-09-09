@@ -1,12 +1,18 @@
 #version 120
 
 varying vec3 r;
+varying vec4 p;
+varying vec4 E;
 varying vec3 normal;
+varying vec3 tangente;
+varying vec3 bitangente;
+varying vec3 binormal;
 uniform float tempo;
 uniform int tipo_mar; // calmo (1), agitado (2) ou com ondas altas (3)
 varying float f;
 varying float z;
-
+varying vec3 view_vector;
+varying vec3 vertex_normal;
 // duas sine waves em x
 // duas sine waves em y
 // duas cosine waves em x 
@@ -15,11 +21,12 @@ varying float z;
 
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
-  r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex));
+  r = vec3(gl_ModelViewMatrix * gl_Vertex);
   normal = normalize(gl_NormalMatrix * gl_Normal);
+  E = normalize(gl_ModelViewMatrix * gl_Vertex);
+
+  p = gl_Vertex;
   
-  vec4 p = gl_Vertex;
- 
   /* Funçoes de onda*/
   if ( tipo_mar == 1 ) {
 
@@ -113,7 +120,6 @@ void main() {
   }
   if ( tipo_mar == 3 ) {
 
-
     float comp[2]; // coordenadas de mundo
     comp[0] = 4.0;
     comp[1] = 8.0;
@@ -159,7 +165,7 @@ void main() {
     // p.x = p.x + pow( abs( (0.08 * ( cos( (p.y + tempo) * 2.5 ) + cos( p.z + tempo )))), 8.0);
 
  }
-
+   
   // Set the position of the current vertex 
   gl_Position = gl_ModelViewProjectionMatrix * p ; //gl_Vertex;
 }

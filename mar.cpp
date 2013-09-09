@@ -81,12 +81,28 @@ void init(void) {
   glShadeModel(GL_SMOOTH);
 	
   glEnable(GL_LIGHTING);
+
+#if 0
   glEnable(GL_LIGHT0);
 	
   glLightfv(GL_LIGHT0, GL_POSITION, 	pos);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, 	KdLig);
   glLightfv(GL_LIGHT0, GL_AMBIENT, 	KaLig);
   glLightfv(GL_LIGHT0, GL_SPECULAR, 	KeLig);
+
+#else
+  GLfloat pos1[4]   = { -40.0, 5.0, -50.0, 1.0 }; 
+  GLfloat light_direction[] = {0.0, 1.0, 1.0, 0.0};
+  glEnable(GL_LIGHT0);
+
+  GLfloat red[4] = {1.0, 0.0, 0.0, 1.0};
+  glLightfv(GL_LIGHT0, GL_POSITION, pos1);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, 	KdLig);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, 	KdLig);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, KeLig);
+  glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light_direction);
+#endif
+
 
 }
 
@@ -141,7 +157,7 @@ static void display(void) {
   GLfloat KaMat[4] 	= { 0.0, 0.3, 0.6, 1.0 };
   GLfloat KdMat[4] 	= { 0.2, 0.3, 0.5, 1.0 }; 
   GLfloat KeMat[4] 	= { 1.0, 1.0, 1.0, 1.0 }; 
-  GLfloat Shine[1] 	= { 80.0 }; 
+  GLfloat Shine[1] 	= { 8.0 }; 
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -154,14 +170,20 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-  gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+  // gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 
   glActiveTexture(GL_TEXTURE0);
+
+#if 1
   glEnable(GL_TEXTURE_2D);
 
   glBindTexture(GL_TEXTURE_2D, texName[0]);
+#else
+    glBindTexture(GL_TEXTURE_CUBE_MAP, texName[0]);
+#endif
 
   if (shader) {
     glUseProgram(shaderProg);
@@ -292,6 +314,8 @@ static void reshape(int wid, int ht) {
    =======================================================================*/
 void initTexture(IplImage*  img) {  
   glGenTextures(1, texName); //gera a textura com os dados carregados
+
+#if 1
   glBindTexture(GL_TEXTURE_2D, texName[0]); // faz o bind da textura com seu array
   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); // set texture environment parameters
   
@@ -302,9 +326,29 @@ void initTexture(IplImage*  img) {
   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
   glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 
-  // Gera a texture
+  // Gera a textura
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, 
                GL_UNSIGNED_BYTE, img->imageData);
+#else
+  glBindTexture(GL_TEXTURE_CUBE_MAP, texName[0]); // faz o bind da textura com seu array
+  glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); // set texture environment parameters
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
+
+
+#endif
 }
 
 

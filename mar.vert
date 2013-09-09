@@ -1,5 +1,3 @@
-#version 120
-
 varying vec3 r;
 varying vec4 p;
 varying vec4 E;
@@ -22,7 +20,7 @@ varying vec3 vertex_normal;
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
   r = vec3(gl_ModelViewMatrix * gl_Vertex);
-  normal = normalize(gl_NormalMatrix * gl_Normal);
+  normal = normalize(gl_NormalMatrix * vec3(0.0, 1.0, 0.0));
   E = normalize(gl_ModelViewMatrix * gl_Vertex);
 
   p = gl_Vertex;
@@ -35,7 +33,7 @@ void main() {
     comp[1] = 16.0;
     float phase[2]; // segundos * PI / comp
     phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (3 * comp[1]);
+    phase[1] = 3.14 / (3.0 * comp[1]);
     float amplitude[2]; // coordenadas de mundo
     amplitude[0] = 0.6; 
     amplitude[1] = 0.6;
@@ -55,7 +53,7 @@ void main() {
       k = 2.0 * 3.141 / comp[i];
       pot = sqrt(31.41 / k);
 
-      accxz = accxz + (1 / (sharpness[i] * k)) * cos(dot(v[i], p.xz) * k + tempo * phase[i]); //XXX redundante k * amp
+      accxz = accxz + (1.0 / (sharpness[i] * k)) * cos(dot(v[i], p.xz) * k + tempo * phase[i]); //XXX redundante k * amp
       accy = accy + amplitude[i] * sin(dot(v[i], p.xz) * k + tempo * phase[i]);
 
     }
@@ -125,7 +123,7 @@ void main() {
     comp[1] = 8.0;
     float phase[2]; // segundos * PI / comp
     phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (3 * comp[1]);
+    phase[1] = 3.14 / (3.0 * comp[1]);
     float amplitude[2]; // coordenadas de mundo
     amplitude[0] = 0.4;
     amplitude[1] = 0.3;
@@ -167,5 +165,5 @@ void main() {
  }
    
   // Set the position of the current vertex 
-  gl_Position = gl_ModelViewProjectionMatrix * p ; //gl_Vertex;
+  gl_Position = gl_ModelViewProjectionMatrix * p + ftransform() ; //gl_Vertex;
 }

@@ -4,7 +4,7 @@ varying vec3 normal;
 varying vec4 p;
 varying vec4 E;
 // direcao do ponto luminoso
-const vec3 Ln = vec3(0.913, 0.365, 0.183);
+const vec3 Ln = vec3(-0.913, 0.365, 0.183);
 const float r0 = 0.1;  // reflexão de Fresnel para ângulo 0
 vec3 reflectDiff;
 uniform sampler2D env;
@@ -49,11 +49,9 @@ void main() {
   vec4 l_amb = gl_FrontLightProduct[0].ambient;
   // componente difusa
   vec4 l_difusa = gl_FrontLightProduct[0].diffuse * max(dot(normal,light), 0.0);   
-      l_difusa = clamp(l_difusa, 0.0, 1.0);
   // componente especular
   vec4 l_espec = gl_FrontLightProduct[0].specular * 
     pow(max(dot(reflexao, eye),0.0), 0.3 * gl_FrontMaterial.shininess);
-    l_espec = clamp(l_espec, 0.0, 1.0);
 
   /* Aplicando normal perturbada */
   
@@ -94,29 +92,34 @@ void main() {
   vec4 xi = vec4(r, 0.0);
   vec4 E = normalize(-xi); 
   vec3 In = normalize(p.xyz * E.w - E.xyz * p.w); // view
-  vec3 diff_luz_eye = normalize(Ln - In); // diferença entre a luz e a visão
-  // cor
-  float diff = max(0.0, dot(normal,Ln));
-  float spot_especular = pow(max(0.0 ,dot(normal, diff_luz_eye)), 16.0);  
-
+  vec3 Hw = normalize(Ln - In); // halfway between view and light
+  
   vec3 reflectSpot = reflect(In, normal);
   vec3 reflectDiff = normalize(reflectSpot - In);
-
+  
   float fresnel = r0 + (1.0 - r0) * pow(1.0 + dot(In, reflectDiff), 5.0);
   vec4 env = texture2D(textura, 0.5 + 0.5 * normalize(reflectSpot + vec3(0, 0, 1)).xy);
+  
+  // cor
+  float diff = max(0.0, dot(normal,Ln));
+  float spot_especular = pow(max(0.0 ,dot(normal, Hw)), 16.0);
   vec4 cor_spot = gl_LightSource[0].ambient + gl_LightSource[0].diffuse * diff + gl_LightSource[0].specular * spot_especular;
-  //  vec4 cor_spot = l_amb + l_difusa + l_espec;
   
+  vec4 col = l_amb + l_difusa + l_espec;
   
+
+  gl_FragColor = mix(env,col,fresnel)*texel*vec4(0.0,0.5,0.8,0.0);
+
   /* Compondo as componentes cores */
-  gl_FragColor.rgb = vec3(0.0, 0.0, 0.0);
+  //gl_FragColor.rgb = vec3(0.0, 0.0, 0.0);
   //gl_FragColor += mix(env, cor_spot, fresnel);
   
-  gl_FragColor = (gl_FrontLightModelProduct.sceneColor + l_amb + l_difusa + l_espec ) * texel;  
-  //gl_FragColor.rgb += cor_final.rgb;
+  //gl_FragColor = (gl_FrontLightModelProduct.sceneColor + l_amb + l_difusa + l_espec);  
+    //gl_FragColor.rgb += cor_final.rgb;
   //gl_FragColor.rgb += PN.rgb ;//+ cor_final.rgb;
-  //gl_FragColor.rgb = normal.rgb;
+  //  gl_FragColor.rgb += normal.rgb;
   //gl_FragColor.a = texel.a;
   //gl_FragColor *= texel;
  
 }
+

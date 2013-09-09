@@ -114,7 +114,7 @@ void DesenhaEixos() {
 void DesenhaBase(int res) {
     
   float d = 20.0 / (float)res;
-
+  //  glPolygonMode(GL_FRONT, GL_LINE);
   for (float x = -50.0 ; x < 50.0 ; x+=d) {
     glBegin(GL_QUAD_STRIP);
     for (float z = 50.0 ; z >= -50.0 ; z-=d) {
@@ -147,7 +147,7 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-  gluLookAt (20.0, 10.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 
@@ -248,7 +248,7 @@ static void reshape(int wid, int ht) {
   glViewport (0, 0, wid, ht);
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective (60, aspect, 1.0, 100.0);
+  gluPerspective (60, aspect, 1.0, 40.0);
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
 

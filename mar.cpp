@@ -176,14 +176,20 @@ static void display(void) {
   glutSwapBuffers();
 }
 
+int ignoreTimer = false;
+
+
 /* =======================================================================
 
    =======================================================================*/
-void animation() {
+void animation(int x) {
 
-  t += 0.05;
+  if(!ignoreTimer) {
+    t += 0.05;
 
-  glutPostRedisplay();
+    glutTimerFunc(20, animation, NULL);
+    glutPostRedisplay();
+  }
 }
 
 /* =======================================================================
@@ -200,11 +206,12 @@ static void key(unsigned char keyPressed, int x, int y) {
   case '-': res > 1 ? res-- : 1;
     printf("Resolution = %d\n", res);
     break;
-  case 'r': run = !run;
+  case 'r':
+    run = !run;
+    ignoreTimer != ignoreTimer;
+
     if (run)
-      glutIdleFunc(animation);
-    else
-      glutIdleFunc(NULL);
+      glutTimerFunc(10, animation, NULL);
     break;
   case 'S': 
   case 's': shader = !shader;

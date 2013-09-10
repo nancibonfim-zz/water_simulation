@@ -6,6 +6,7 @@ uniform float tempo;
 uniform int tipo_mar; // calmo (1), agitado (2) ou com ondas altas (3)
 varying float f;
 varying float z;
+varying vec4 p;
 
 // duas sine waves em x
 // duas sine waves em y
@@ -16,11 +17,8 @@ varying float z;
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
   r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex));
-  normal = normalize(gl_NormalMatrix *
-                     //vec3(0.0, 1.0, 0.0));
-                     gl_Normal);
   
-  vec4 p = gl_Vertex;
+  p = gl_Vertex;
 
 
   float comp[8]; // coordenadas de mundo
@@ -174,7 +172,9 @@ void main() {
   }
   normal = normalize(N);
 
-  //  normal = gl_Normal;
+  // normal = gl_NormalMatrix *
+  //                    gl_Normal;
+
   binormal = normalize(B);
   tangente = normalize(T);
 

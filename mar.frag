@@ -1,7 +1,10 @@
 varying vec3 r;
 uniform sampler2D text;
 varying vec3 normal, binormal, tangente;
-
+// direction of brightest point in environment map
+const vec3 Ln = vec3(0.913, 0.365, 0.183);
+const float r0 = 0.1;		// Fresnel reflectance at zero angle
+varying vec4 p;
 
 void main() {
 	
@@ -23,8 +26,25 @@ void main() {
   vec4 l_espec = gl_FrontLightProduct[0].specular * 
     pow(max(dot(reflexao, eye),0.0),0.3*gl_FrontMaterial.shininess);
    
+  /* Spotlight */
+  vec4 xi = vec4(r,0.0);
+  vec4 E = normalize(-xi); 
+  // lighting vectors
+  vec3 In = normalize(p.xyz * E.w - E.xyz * p.w); // -view
+  vec3 Hn = normalize(Ln - In);	// half way between view & light
+  
+  vec3 R = reflect(In, normal);
+  vec3 RH = normalize(R - In);
+  float fresnel = r0 + (1.0 - r0) * pow(1.0 + dot(In, RH), 5.0);
+  vec4 env = texture2D(text, 0.5 +0.5 * normalize(R + vec3(0,0,1)).xy);
+  vec4 col = l_amb + l_difusa + l_espec;
+
+  
+  //  gl_FragColor = mix(env,col,1.0);
+  gl_FragColor.xyz = vec3(0.0, 0.0, 0.0);
+
   // cor final
-  gl_FragColor = (gl_FrontLightModelProduct.sceneColor + l_amb + l_difusa + l_espec) * texel;
+  gl_FragColor += (gl_FrontLightModelProduct.sceneColor + l_amb + l_difusa + l_espec) * texel;
   //  gl_FragColor.rgb = normal.xzy;
-    gl_FragColor.a = 0.5;
+  gl_FragColor.a = 0.5;
 }

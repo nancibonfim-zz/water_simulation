@@ -40,26 +40,6 @@ void main() {
  
   /* Funçoes de onda*/
   if ( tipo_mar == 1 ) {
-    nondas = 2;
-
-    comp[0] = 8.0;
-    comp[1] = 3.0;
-
-    phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (3 * comp[1]);
-
-    amplitude[0] = 0.9; 
-    amplitude[1] = 1.6;
-
-    v[0] = normalize(vec2(0.9, 0.2));
-    v[1] = normalize(vec2(0.3, 0.7));
-
-    sharpness[0] = 100.0;
-    sharpness[1] = 5.0;
-
-
-  }
-  if ( tipo_mar == 2 ) {
     nondas = 8 ;
 
     comp[0] = 1.5; //XXX diminui, diminui a velocidade
@@ -92,13 +72,13 @@ void main() {
     amplitude[7] = 0.4;
 
 
-    v[0] = normalize(vec2(-0.2, -0.9));
-    v[1] = normalize(vec2(-1.10, -0.9));
-    v[2] = normalize(vec2(-1.10, -0.9));
+    v[0] = normalize(vec2(-0.2, -0.45));
+    v[1] = normalize(vec2(-1.10, -0.45));
+    v[2] = normalize(vec2(-1.10, -0.45));
     v[3] = normalize(vec2(-1.10, -0.01));
-    v[4] = normalize(vec2(-1.10, -0.9));
+    v[4] = normalize(vec2(-1.10, -0.45));
     v[5] = normalize(vec2(-1.009, -0.001));
-    v[6] = normalize(vec2(-1.10, -0.9));
+    v[6] = normalize(vec2(-1.10, -0.45));
     v[7] = normalize(vec2(-1.009, -0.001));
 
     sharpness[0] = 8.0;
@@ -109,6 +89,27 @@ void main() {
     sharpness[5] = 160.0;
     sharpness[6] = 8.0;
     sharpness[7] = 10.0;
+
+
+  }
+  if ( tipo_mar == 2 ) {
+    
+    nondas = 2;
+
+    comp[0] = 8.0;
+    comp[1] = 3.0;
+
+    phase[0] = 3.14 / comp[0];
+    phase[1] = 3.14 / (3 * comp[1]);
+
+    amplitude[0] = 0.9; 
+    amplitude[1] = 1.6;
+
+    v[0] = normalize(vec2(-1.1, 0.2));
+    v[1] = normalize(vec2(-0.8, 0.3));
+
+    sharpness[0] = 100.0;
+    sharpness[1] = 5.0;
 
   }
   if ( tipo_mar == 3 ) {
@@ -155,15 +156,15 @@ void main() {
     C = cos(k*dot(v[i], p.xz) + sqrt(phase[i]) * tempo); //XXX verificar se precisa do y
     Q = (1 / (k * sharpness[i] * amplitude[i]));
 
-    // bitangente
-    B.x -= (Q * v[i].x * v[i].x * WA * S);
-    B.z -= (Q * v[i].x * v[i].y * WA * S);
-    B.y += (v[i].x * WA * C);
+    // // bitangente
+    // B.x -= (Q * v[i].x * v[i].x * WA * S);
+    // B.z -= (Q * v[i].x * v[i].y * WA * S);
+    // B.y += (v[i].x * WA * C);
 
-    // tangente
-    T.x -= (Q * v[i].x * v[i].y * WA * S);
-    T.z -= (Q * v[i].y * v[i].y * WA * S);
-    T.y += (v[i].y * WA * C);
+    // // tangente
+    // T.x -= (Q * v[i].x * v[i].y * WA * S);
+    // T.z -= (Q * v[i].y * v[i].y * WA * S);
+    // T.y += (v[i].y * WA * C);
 
     // normal
     N.x -= (v[i].x * WA * C);

@@ -154,15 +154,15 @@ void main() {
     C = cos(k*dot(v[i], p.xz) + sqrt(phase[i]) * tempo); //XXX verificar se precisa do y
     Q = (1 / (k * sharpness[i] * amplitude[i]));
 
-    // // bitangente
-    // B.x -= (Q * v[i].x * v[i].x * WA * S);
-    // B.z -= (Q * v[i].x * v[i].y * WA * S);
-    // B.y += (v[i].x * WA * C);
+    // bitangente
+    B.x -= (Q * v[i].x * v[i].x * WA * S);
+    B.z -= (Q * v[i].x * v[i].y * WA * S);
+    B.y += (v[i].x * WA * C);
 
-    // // tangente
-    // T.x -= (Q * v[i].x * v[i].y * WA * S);
-    // T.z -= (Q * v[i].y * v[i].y * WA * S);
-    // T.y += (v[i].y * WA * C);
+    // tangente
+    T.x -= (Q * v[i].x * v[i].y * WA * S);
+    T.z -= (Q * v[i].y * v[i].y * WA * S);
+    T.y += (v[i].y * WA * C);
 
     // normal
     N.x -= (v[i].x * WA * C);

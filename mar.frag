@@ -2,7 +2,8 @@ varying vec3 r;
 uniform sampler2D text;
 varying vec3 normal, binormal, tangente;
 // direction of brightest point in environment map
-const vec3 Ln = vec3(0.913, 0.365, 0.183);
+const vec3 Ln = normalize(vec3(-5.0, 20.0, 5.0));
+//const vec3 Ln = vec3(0.913, 0.365, 0.183);
 const float r0 = 0.1;		// Fresnel reflectance at zero angle
 varying vec4 p;
 
@@ -10,7 +11,7 @@ void main() {
 	
   vec4 texel = texture2D(text, r.st);
  
-  //  mat3 TBN = mat3(tangente, binormal, normal);
+  mat3 TBN = mat3(tangente, binormal, normal);
 
   /* Iluminaçao*/
   vec3 light = normalize(gl_LightSource[0].position.xyz - r);   
@@ -21,26 +22,32 @@ void main() {
   // componente ambiente
   vec4 l_amb = gl_FrontLightProduct[0].ambient;
   // componente difusa
-  vec4 l_difusa = gl_FrontLightProduct[0].diffuse * max(dot(normal,light), 0.0);    
+  vec4 l_difusa = gl_FrontLightProduct[0].diffuse * max(dot(normal,light), 0.0);
+
   // componente especular
   vec4 l_espec = gl_FrontLightProduct[0].specular * 
     pow(max(dot(reflexao, eye),0.0),0.3*gl_FrontMaterial.shininess);
    
-  /* Spotlight */
-  vec4 xi = vec4(r,0.0);
-  vec4 E = normalize(-xi); 
-  // lighting vectors
-  vec3 In = normalize(p.xyz * E.w - E.xyz * p.w); // -view
-  vec3 Hn = normalize(Ln - In);	// half way between view & light
+  // /* Spotlight */
+  // vec4 E = vec4(eye, 0.0);
+  // // lighting vectors
+  // vec3 In = normalize(p.xyz * E.w - E.xyz * p.w); // -view
+  // vec3 Hn = normalize(Ln - In);	// half way between view & light
   
-  vec3 R = reflect(In, normal);
-  vec3 RH = normalize(R - In);
-  float fresnel = r0 + (1.0 - r0) * pow(1.0 + dot(In, RH), 5.0);
-  vec4 env = texture2D(text, 0.5 +0.5 * normalize(R + vec3(0,0,1)).xy);
-  vec4 col = l_amb + l_difusa + l_espec;
+  // vec3 R = reflect(In, normal);
+  // vec3 RH = normalize(R - In);
+  // float fresnel = r0 + (1.0 - r0) * pow(1.0 + dot(In, RH), 5.0);
+  // // try B and T bellow
+  // vec4 env = texture2D(text, 0.5 +0.5 * normalize(R + tangente).xy);
+
+  // float diff = max(0.0, dot(normal, Ln));
+  // float spec = pow(max(0.0, dot(normal, Hn)), 16.0);
+
+  // vec4 col = gl_FrontLightProduct[0].ambient + gl_FrontLightProduct[0].diffuse * diff
+  //   + gl_FrontLightProduct[0].specular * spec;
 
   
-  //  gl_FragColor = mix(env,col,1.0);
+  // gl_FragColor = mix(env,col,fresnel);
   gl_FragColor.xyz = vec3(0.0, 0.0, 0.0);
 
   // cor final

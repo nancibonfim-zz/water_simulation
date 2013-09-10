@@ -158,7 +158,7 @@ static void display(void) {
   GLfloat KdMat[4] 	= { 0.2, 0.3, 0.5, 1.0 }; 
   GLfloat KeMat[4] 	= { 1.0, 1.0, 1.0, 1.0 }; 
 
-  GLfloat Shine[1] 	= { 80.0 }; 
+  GLfloat Shine[1] 	= { 90.0 }; 
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -171,9 +171,9 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-   gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+  //     gluLookAt (50.0, 5.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
   //   gluLookAt (-25.0, 50.0, -25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-  //  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 

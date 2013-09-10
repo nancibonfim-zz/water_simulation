@@ -174,8 +174,8 @@ static void display(void) {
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
   //  gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-      gluLookAt (25.0, 50.0, 25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-  //  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  //gluLookAt (25.0, 50.0, 25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+      gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 

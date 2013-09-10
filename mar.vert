@@ -134,15 +134,15 @@ void main() {
     phase[1] = 3.14 / (3 * comp[1]);
     phase[2] = 3.14 / (3 * comp[2]);
     phase[3] = 3.14 / comp[3];
-    phase[4] = 3.14 / (0.5 *comp[4]);
-    phase[5] = 3.14 / ( 0.3*comp[5]);
+    phase[4] = 3.14 / (1.2 *comp[4]);
+    phase[5] = 3.14 / (comp[5]);
 
     amplitude[0] = 0.4;
     amplitude[1] = 0.7;
     amplitude[2] = 1.0;
-    amplitude[0] = 0.35;
-    amplitude[1] = 0.8;
-    amplitude[2] = 0.95;
+    amplitude[3] = 0.35;
+    amplitude[4] = 1.8;
+    amplitude[5] = 2.3;
 
     v[0] = normalize(vec2(-1.0, -0.5));
     v[1] = normalize(vec2(-1.0, 0.0));

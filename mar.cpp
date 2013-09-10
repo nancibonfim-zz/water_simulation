@@ -91,8 +91,8 @@ void init(void) {
   glLightfv(GL_LIGHT0, GL_SPECULAR, 	KeLig);
 
 #else
-  GLfloat pos1[4]   = { -40.0, 5.0, -50.0, 1.0 }; 
-  GLfloat light_direction[] = {0.0, 1.0, 1.0, 0.0};
+  GLfloat pos1[4]   = { -5.0, 20.0, 5.0, 1.0 }; 
+  GLfloat light_direction[] = {0.0, -1.0, -0.0, 0.0};
   glEnable(GL_LIGHT0);
 
   GLfloat red[4] = {1.0, 0.0, 0.0, 1.0};
@@ -140,6 +140,7 @@ void DesenhaBase(int res) {
   //  glPolygonMode(GL_FRONT, GL_LINE);
   for (float x = -50.0 ; x < 50.0 ; x+=d) {
     glBegin(GL_QUAD_STRIP);
+    glNormal3f(0.0f, 1.0f, 0.0f);
     for (float z = 50.0 ; z >= -50.0 ; z-=d) {
       glVertex3f(x, 0.0, z);
       glVertex3f(x+d, 0.0, z);
@@ -152,12 +153,12 @@ void DesenhaBase(int res) {
    display
    =======================================================================*/
 static void display(void) {
-  
 
-  GLfloat KaMat[4] 	= { 0.0, 0.3, 0.6, 1.0 };
+  GLfloat KaMat[4] 	= { 0.01, 0.3, 0.6, 1.0 };
   GLfloat KdMat[4] 	= { 0.2, 0.3, 0.5, 1.0 }; 
   GLfloat KeMat[4] 	= { 1.0, 1.0, 1.0, 1.0 }; 
-  GLfloat Shine[1] 	= { 8.0 }; 
+
+  GLfloat Shine[1] 	= { 80.0 }; 
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -170,8 +171,9 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-  // gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+   gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+  //   gluLookAt (-25.0, 50.0, -25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+  //  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 
@@ -303,7 +305,7 @@ static void reshape(int wid, int ht) {
   glViewport (0, 0, wid, ht);
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective (60, aspect, 1.0, 40.0);
+  gluPerspective (60, aspect, 1.0, 100.0);
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
 

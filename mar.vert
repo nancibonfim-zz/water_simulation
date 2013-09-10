@@ -1,16 +1,12 @@
+#version 120
+
 varying vec3 r;
-varying vec4 p;
-varying vec4 E;
 varying vec3 normal;
-varying vec3 tangente;
-varying vec3 bitangente;
-varying vec3 binormal;
 uniform float tempo;
 uniform int tipo_mar; // calmo (1), agitado (2) ou com ondas altas (3)
 varying float f;
 varying float z;
-varying vec3 view_vector;
-varying vec3 vertex_normal;
+
 // duas sine waves em x
 // duas sine waves em y
 // duas cosine waves em x 
@@ -19,46 +15,80 @@ varying vec3 vertex_normal;
 
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
-  r = vec3(gl_ModelViewMatrix * gl_Vertex);
-  normal = normalize(gl_NormalMatrix * vec3(0.0, 1.0, 0.0));
-  E = normalize(gl_ModelViewMatrix * gl_Vertex);
-
-  p = gl_Vertex;
+  r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex));
+  normal = normalize(gl_NormalMatrix *
+                     //vec3(0.0, 1.0, 0.0));
+                     gl_Normal);
   
+  vec4 p = gl_Vertex;
+ 
   /* Funçoes de onda*/
   if ( tipo_mar == 1 ) {
 
     float comp[2]; // coordenadas de mundo
     comp[0] = 8.0;
-    comp[1] = 16.0;
+    comp[1] = 3.0;
     float phase[2]; // segundos * PI / comp
     phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (3.0 * comp[1]);
+    phase[1] = 3.14 / (3 * comp[1]);
     float amplitude[2]; // coordenadas de mundo
-    amplitude[0] = 0.6; 
-    amplitude[1] = 0.6;
+    amplitude[0] = 0.9; 
+    amplitude[1] = 1.6;
     vec2 v[2];
-    v[0] = vec2(0.9, 0.2);
-    v[1] = vec2(0.3, 0.7);
+    v[0] = normalize(vec2(0.9, 0.2));
+    v[1] = normalize(vec2(0.3, 0.7));
     float sharpness[2]; // 1 - muito pontiaguda, 1000 é bem pouco
-    sharpness[0] = 2.0;
-    sharpness[1] = 5.0;
+    sharpness[0] = 100.0;
+    sharpness[1] = 2.0;
 
     float k, pot;
     float accy = 0.0;
     vec2 accxz = vec2(0.0, 0.0);
     float accx = 0.0, accz = 0.0;
+    vec3 B = vec3(1.0, 0.0, 0.0),
+      T = vec3(0.0, 1.0, 0.0),
+      N = vec3(0.0, 0.0, 1.0);
+    
+
 
     for (int i = 0; i < 2; i++) {
       k = 2.0 * 3.141 / comp[i];
       pot = sqrt(31.41 / k);
 
-      accxz = accxz + (1.0 / (sharpness[i] * k)) * cos(dot(v[i], p.xz) * k + tempo * phase[i]); //XXX redundante k * amp
+      accxz = accxz + (1 / (sharpness[i] * k)) * v[i] * cos(dot(v[i], p.xz) * k + tempo * phase[i]);
       accy = accy + amplitude[i] * sin(dot(v[i], p.xz) * k + tempo * phase[i]);
-
+      
     }
     p.y = p.y - accy;
     p.xz = p.xz - accxz;
+
+    for (int i = 0; i < 2; i++) {
+      // bitangente, tangente, normal
+      float WA, S, C, Q;
+      WA = k * amplitude[i];
+      S = sin(k*dot(v[i], p.xz) + phase[i] * tempo); //XXX verificar se precisa do y
+      C = cos(k*dot(v[i], p.xz) + phase[i] * tempo); //XXX verificar se precisa do y
+      Q = (1 / (k * sharpness[i] * amplitude[i]));
+
+      // bitangente
+      B.x -= (Q * v[i].x * v[i].x * WA * S);
+      B.z -= (Q * v[i].x * v[i].y * WA * S);
+      B.y += (v[i].x * WA * C);
+
+      // tangente
+      T.x -= (Q * v[i].x * v[i].y * WA * S);
+      T.z -= (Q * v[i].y * v[i].y * WA * S);
+      T.y += (v[i].y * WA * C);
+
+      // normal
+      N.x -= (v[i].x * WA * C);
+      N.z -= (v[i].y * WA * C);
+      N.y -= (Q * WA * S);
+
+    }
+    normal = normalize(N);
+
+
 
   }
   if ( tipo_mar == 2 ) {
@@ -118,12 +148,13 @@ void main() {
   }
   if ( tipo_mar == 3 ) {
 
+
     float comp[2]; // coordenadas de mundo
     comp[0] = 4.0;
     comp[1] = 8.0;
     float phase[2]; // segundos * PI / comp
     phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (3.0 * comp[1]);
+    phase[1] = 3.14 / (3 * comp[1]);
     float amplitude[2]; // coordenadas de mundo
     amplitude[0] = 0.4;
     amplitude[1] = 0.3;
@@ -134,8 +165,6 @@ void main() {
     float k, pot;
     float accy = 0.0;
     vec2 accxz = vec2(0.0, 0.0);
-
-    
 
     for (int i = 0; i < 2; i++) {
       k = 2.0 * 3.141 / comp[i];
@@ -163,7 +192,7 @@ void main() {
     // p.x = p.x + pow( abs( (0.08 * ( cos( (p.y + tempo) * 2.5 ) + cos( p.z + tempo )))), 8.0);
 
  }
-   
+
   // Set the position of the current vertex 
-  gl_Position = gl_ModelViewProjectionMatrix * p + ftransform() ; //gl_Vertex;
+  gl_Position = gl_ModelViewProjectionMatrix * p + ftransform(); //gl_Vertex;
 }

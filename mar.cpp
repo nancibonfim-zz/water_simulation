@@ -16,6 +16,8 @@
    Includes
    ======================================================================= */
 
+#define T2D 1
+
 #include <stdbool.h>
 #include <cstdlib>
 #include <cstdio>
@@ -171,19 +173,20 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-  //gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-     gluLookAt (25.0, 50.0, 25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-  //    gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  //  gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+      gluLookAt (25.0, 50.0, 25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+  //  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 
   glActiveTexture(GL_TEXTURE0);
 
-#if 1
+#if T2D
   glEnable(GL_TEXTURE_2D);
 
   glBindTexture(GL_TEXTURE_2D, texName[0]);
 #else
+  glEnable(GL_TEXTURE_CUBE_MAP);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texName[0]);
 #endif
 
@@ -317,7 +320,7 @@ static void reshape(int wid, int ht) {
 void initTexture(IplImage*  img) {  
   glGenTextures(1, texName); //gera a textura com os dados carregados
 
-#if 1
+#if T2D
   glBindTexture(GL_TEXTURE_2D, texName[0]); // faz o bind da textura com seu array
   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); // set texture environment parameters
   

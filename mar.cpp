@@ -171,9 +171,9 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-  //     gluLookAt (50.0, 5.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
+       gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
   //   gluLookAt (-25.0, 50.0, -25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-    gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  //    gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 
@@ -305,7 +305,7 @@ static void reshape(int wid, int ht) {
   glViewport (0, 0, wid, ht);
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective (60, aspect, 1.0, 100.0);
+  gluPerspective (60, aspect, 1.0, 40.0);
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
 

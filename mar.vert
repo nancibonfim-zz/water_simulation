@@ -30,7 +30,7 @@ void main() {
   float sharpness[8]; // 1 - muito pontiaguda, 1000 é bem pouco
   float nondas;
 
-  float k, pot;
+  float k;
   float accy = 0.0;
   vec2 accxz = vec2(0.0, 0.0);
 
@@ -55,7 +55,7 @@ void main() {
     v[1] = normalize(vec2(0.3, 0.7));
 
     sharpness[0] = 100.0;
-    sharpness[1] = 2.0;
+    sharpness[1] = 5.0;
 
 
   }
@@ -72,14 +72,14 @@ void main() {
     comp[7] = 17.0;
 
 
-    phase[0] = 3.14 / (30 * comp[0]);
-    phase[1] = 3.14 / (50 * comp[1]);
+    phase[0] = 3.14 / (3 * comp[0]);
+    phase[1] = 3.14 / (5 * comp[1]);
     phase[2] = 3.14 / (10 * comp[2]);
     phase[3] = 3.14 / (60 * comp[3]);
-    phase[4] = 3.14 / (80 * comp[4]);
-    phase[5] = 3.14 / (40 * comp[5]);
-    phase[6] = 3.14 / (70 * comp[6]);
-    phase[7] = 3.14 / (90 * comp[7]);
+    phase[4] = 3.14 / (8 * comp[4]);
+    phase[5] = 3.14 / (4 * comp[5]);
+    phase[6] = 3.14 / (7 * comp[6]);
+    phase[7] = 3.14 / (9 * comp[7]);
 
 
     amplitude[0] = 0.15;
@@ -110,61 +110,49 @@ void main() {
     sharpness[6] = 8.0;
     sharpness[7] = 10.0;
 
-    // // funçoes seno em y
-    // p.y = p.y + pow( abs( (0.10 * ( sin( (p.x + tempo) / 8.0) + sin( p.z + tempo )))), 1.0);
-    // p.y = p.y + pow( abs( (0.05 * ( sin( (p.x + tempo) / 4.0 ) + sin( p.z + tempo )))), 2.0);
-    // // funçoes seno em x
-    // p.x = p.x + pow( abs( (0.05 * ( sin( (p.y + tempo) / 2.5 ) + sin( p.z + tempo )))), 4.0);
-    // p.x = p.x + pow( abs( (0.005 * ( sin( (p.y + tempo) / 3.5 ) + sin( p.z + tempo )))), 8.0) ;
-    // // funçoes cosseno em y
-    // p.y = p.y + pow( abs( (0.10 * ( cos( (p.x + tempo) / 2.0 ) + cos( p.z + tempo )))), 1.0);
-    // p.y = p.y + pow( abs( (0.05 * ( cos( (p.x + tempo )/ 2.0 ) + cos( p.z + tempo )))), 2.0);
-    // // funçoes cosseno em x
-    // p.x = p.x + pow( abs( (0.05 * ( cos( (p.y + tempo) / 2.5 ) + cos( p.z + tempo )))), 4.0);
-    // p.x = p.x + pow( abs( (0.005 * ( cos( (p.y + tempo) / 4.5 ) + cos( p.z + tempo )))), 8.0);
-
   }
   if ( tipo_mar == 3 ) {
-    nondas = 2;
+    nondas = 3;
 
-    comp[0] = 8.0;
+    comp[0] = 4.0;
     comp[1] = 8.0;
+    comp[2] = 15.0;
 
-    phase[0] = 0.0;
-    phase[1] = 0.0;
+    phase[0] = 3.14 / comp[0];
+    phase[1] = 3.14 / (3 * comp[1]);
+    phase[2] = 3.14 / (3 * comp[2]);
 
-    amplitude[0] = 0.8;
-    amplitude[1] = 2.8;
+    amplitude[0] = 0.4;
+    amplitude[1] = 0.7;
+    amplitude[2] = 1.0;
 
-    v[0] = normalize(vec2(-0.9, -1.1));
-    v[1] = normalize(vec2(1.0, 1.0));
+    v[0] = normalize(vec2(-1.0, -0.5));
+    v[1] = normalize(vec2(-1.0, 0.0));
+    v[2] = normalize(vec2(-1.0, 0.0));
 
-    sharpness[0] = 10.0;
+    sharpness[0] = 5.0;
     sharpness[1] = 10.0;
+    sharpness[2] = 10.0;
  }
 
 
   for (int i = 0; i < nondas; i++) {
-    k = sqrt(2.0 * 3.141 / comp[i]);
+    k = 2.0 * 3.141 / comp[i];
 
-    // accxz = accxz + (1 / (sharpness[i] * k)) * v[i] * cos(dot(v[i], p.xz) * k + tempo * phase[i]);
-    // accy = accy + amplitude[i] * sin(dot(v[i], p.xz) * k + tempo * phase[i]);
-    accxz = accxz + (1 / (sharpness[i] * k)) * v[i] * cos(dot(v[i], p.xz) + k  * tempo  + phase[i]);
-    accy = accy + amplitude[i] * sin(dot(v[i], p.xz) + k  * tempo + phase[i]);
+    accxz = accxz + (1 / (sharpness[i] * k)) * v[i] * cos(dot(v[i], p.xz) * k + tempo * sqrt(phase[i]));
+    accy = accy + amplitude[i] * sin(dot(v[i], p.xz) * k + tempo * sqrt(phase[i]));
 
   }
   p.y = p.y - accy;
   p.xz = p.xz - accxz;
 
   for (int i = 0; i < nondas; i++) {
-    k = sqrt(2.0 * 3.141 / comp[i]);
+    k = 2.0 * 3.141 / comp[i];
     // bitangente, tangente, normal
     float WA, S, C, Q;
     WA = k * amplitude[i];
-    // S = sin(k*dot(v[i], p.xz) + phase[i] * tempo);
-    // C = cos(k*dot(v[i], p.xz) + phase[i] * tempo);
-    S = sin(k*dot(v[i], p.xz) + k * tempo + phase[i]);
-    C = cos(k*dot(v[i], p.xz) + k * tempo + phase[i]);
+    S = sin(k*dot(v[i], p.xz) + sqrt(phase[i]) * tempo); //XXX verificar se precisa do y
+    C = cos(k*dot(v[i], p.xz) + sqrt(phase[i]) * tempo); //XXX verificar se precisa do y
     Q = (1 / (k * sharpness[i] * amplitude[i]));
 
     // bitangente
@@ -184,6 +172,7 @@ void main() {
 
   }
   normal = normalize(N);
+
   //  normal = gl_Normal;
   binormal = normalize(B);
   tangente = normalize(T);

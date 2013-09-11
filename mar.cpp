@@ -55,7 +55,8 @@ float t = 0.0;
 
 int situacao_mar = 1; // calmo (1), agitado (2) ou com ondas altas (3)
 
-float posx = 25.0, posy = 50.0, posz = 25.0;
+//float posx = 44.0, posy = 28.0, posz = 18.0;
+float posx = 39.0, posy = 14.0, posz = 18.0;
 float eyex = 0.0, eyey = 0.0, eyez = 0.0;
 
 
@@ -141,8 +142,8 @@ void DesenhaBase(int res) {
    =======================================================================*/
 static void display(void) {
 
-  GLfloat KaMat[4] 	= { 0.01, 0.33, 0.6, 1.0 };
-  GLfloat KdMat[4] 	= { 0.2, 0.35, 0.5, 1.0 }; 
+  GLfloat KaMat[4] 	= { 0.01, 0.3, 0.6, 1.0 };
+  GLfloat KdMat[4] 	= { 0.2, 0.3, 0.5, 1.0 }; 
   GLfloat KeMat[4] 	= { 0.8, 0.9, 1.0, 1.0 }; 
 
   GLfloat Shine[1] 	= { 30.0 }; 
@@ -290,7 +291,7 @@ static void reshape(int wid, int ht) {
   glViewport (0, 0, wid, ht);
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective (60, aspect, 1.0, 100.0);
+  gluPerspective (60, aspect, 1.0, 80.0);
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();
 

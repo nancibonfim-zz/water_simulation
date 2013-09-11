@@ -26,11 +26,11 @@ void main() {
   r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex)); //XXX remover
 
 
-  float comp[8]; // coordenadas de mundo
-  float phase[8]; // segundos * PI / comp
-  float amplitude[8]; // coordenadas de mundo
-  vec2 v[8];
-  float sharpness[8]; // 1 - muito pontiaguda, 1000 é bem pouco
+  float comp[10]; // coordenadas de mundo
+  float phase[10]; // segundos * PI / comp
+  float amplitude[10]; // coordenadas de mundo
+  vec2 v[10];
+  float sharpness[10]; // 1 - muito pontiaguda, 1000 é bem pouco
   float nondas;
 
   float k;
@@ -74,7 +74,6 @@ void main() {
     amplitude[6] = 0.6;
     amplitude[7] = 0.4;
 
-
     v[0] = normalize(vec2(-0.2, -0.45));
     v[1] = normalize(vec2(-1.10, -0.45));
     v[2] = normalize(vec2(-1.10, -0.45));
@@ -97,61 +96,113 @@ void main() {
   }
   if ( tipo_mar == 2 ) {
     
-    nondas = 4;
+    nondas = 8;
 
-    comp[0] = 8.0;
-    comp[1] = 10.0;
+    comp[0] = 16.0;
+    comp[1] = 20.0;
     comp[2] = 2.0;
-    comp[3] = 0.3;
+    comp[3] = 3.0;
+    comp[4] = 2.0;
+    comp[5] = 8.0;
+    comp[6] = 15.0;
+    comp[7] = 17.0;
 
     phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (2 * comp[1]);
-    phase[2] = 3.14 / comp[2];
+    phase[1] = 3.14 / (20 * comp[1]);
+    phase[2] = 3.14 / ( 1.4 * comp[2]);
+    phase[3] = 3.14 / (30 * comp[3]);
+    phase[4] = 3.14 / (80 * comp[4]);
+    phase[5] = 3.14 / (40 * comp[5]);
+    phase[6] = 3.14 / (70 * comp[6]);
+    phase[7] = 3.14 / (90 * comp[7]);
 
-    phase[3] = 3.14 / (3 * comp[3]);
-
-    amplitude[0] = 0.7; 
-    amplitude[1] = 1.2;
-    amplitude[2] = 0.5; 
-    amplitude[3] = 0.2;
+    amplitude[0] = 2.7; 
+    amplitude[1] = 2.2;
+    amplitude[2] = 0.21; 
+    amplitude[3] = 0.23;
+    amplitude[4] = 0.29;
+    amplitude[5] = 0.15;
+    amplitude[6] = 0.6;
+    amplitude[7] = 0.4;
 
     v[0] = normalize(vec2(-1.0, 0.0));
     v[1] = normalize(vec2(-0.95, 0.1));
-    v[2] = normalize(vec2(-1.05, -0.1));
+    v[2] = normalize(vec2(-0.05, -0.47));
     v[3] = normalize(vec2(1.1, 0.0));
+    v[4] = normalize(vec2(-1.10, -0.45));
+    v[5] = normalize(vec2(-1.009, -0.001));
+    v[6] = normalize(vec2(-1.10, -0.45));
+    v[7] = normalize(vec2(-1.009, -0.001));
+
 
     sharpness[0] = 10.0;
     sharpness[1] = 5.0;
-    sharpness[2] = 100.0;
+    sharpness[2] = 10.0;
     sharpness[3] = 20.0;
+    sharpness[4] = 8.0;
+    sharpness[5] = 16.0;
+    sharpness[6] = 4.0;
+    sharpness[7] = 2.0;
 
   }
   if ( tipo_mar == 3 ) {
-    nondas = 4;
+    nondas = 10;
 
     comp[0] = 4.0;
     comp[1] = 6.0;
     comp[2] = 16.0;
     comp[3] = 10.0;
+    comp[4] = 2.0;
+    comp[5] = 3.0;
+    comp[6] = 2.0;
+    comp[7] = 8.0;
+    comp[8] = 19.0;
+    comp[9] = 14.0;
+
     phase[0] = 3.14 / comp[0];
-    phase[1] = 3.14 / (3 * comp[1]);
-    phase[2] = 3.14 / (3 * comp[2]);
-    phase[3] = 3.14 / 4* comp[3];
+    phase[1] = 3.14 * 5.5/ ( comp[1]);
+    phase[2] = 3.14 * 4.5 / ( comp[2]);
+    phase[3] = 3.14 * 7 /  comp[3];
+    phase[4] = 3.14 * 3/ (  comp[4]);
+    phase[5] = 3.14 * 2/ ( comp[5]);
+    phase[6] = 3.14 / (1.2 * comp[6]);
+    phase[7] = 3.14 * 10.5/ (comp[7]);
+    phase[8] = 3.14 * 5 / ( comp[8]);
+    phase[9] = 3.14 * 3 / ( comp[8]);
 
     amplitude[0] = 0.4;
     amplitude[1] = 0.7;
     amplitude[2] = 1.2;
     amplitude[3] = 2.35;
+    amplitude[4] = 0.21; 
+    amplitude[5] = 0.23;
+    amplitude[6] = 0.29;
+    amplitude[7] = 0.15;
+    amplitude[8] = 2.0;
+    amplitude[9] = 2.1;
 
     v[0] = normalize(vec2(-1.0, -0.5));
     v[1] = normalize(vec2(-1.0, 0.1));
-    v[2] = normalize(vec2(-1.0, 0.0));
+    v[2] = normalize(vec2(-1.2, 0.2));
     v[3] = normalize(vec2(-0.95, -0.1));
+    v[4] = normalize(vec2(-0.05, -0.47));
+    v[5] = normalize(vec2(1.1, 0.0));
+    v[6] = normalize(vec2(-1.10, -0.45));
+    v[7] = normalize(vec2(-1.009, -0.001));
+    v[8] = normalize(vec2(-0.909, -0.101));
+    v[9] = normalize(vec2(-0.909, -0.101));
 
     sharpness[0] = 5.0;
     sharpness[1] = 10.0;
     sharpness[2] = 10.0;
     sharpness[3] = 4.0;
+    sharpness[4] = 10.0;
+    sharpness[5] = 20.0;
+    sharpness[6] = 8.0;
+    sharpness[7] = 16.0;
+    sharpness[8] = 100.0;
+    sharpness[9] = 10.0;
+
  }
 
 

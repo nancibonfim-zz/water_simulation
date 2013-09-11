@@ -4,6 +4,7 @@ varying vec3 r;
 varying vec3 normal, binormal, tangente;
 uniform float tempo;
 uniform int tipo_mar; // calmo (1), agitado (2) ou com ondas altas (3)
+//uniform vec3 worldCameraPos;
 varying float f;
 varying float z;
 varying vec4 p;
@@ -16,7 +17,6 @@ varying vec4 p;
 
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
-  r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex));
   
   p = gl_Vertex;
 
@@ -179,15 +179,15 @@ void main() {
     C = cos(k*dot(v[i], p.xz) + sqrt(phase[i]) * tempo); //XXX verificar se precisa do y
     Q = (1 / (k * sharpness[i] * amplitude[i]));
 
-    // bitangente
-    B.x -= (Q * v[i].x * v[i].x * WA * S);
-    B.z -= (Q * v[i].x * v[i].y * WA * S);
-    B.y += (v[i].x * WA * C);
+    // // bitangente
+    // B.x -= (Q * v[i].x * v[i].x * WA * S);
+    // B.z -= (Q * v[i].x * v[i].y * WA * S);
+    // B.y += (v[i].x * WA * C);
 
-    // tangente
-    T.x -= (Q * v[i].x * v[i].y * WA * S);
-    T.z -= (Q * v[i].y * v[i].y * WA * S);
-    T.y += (v[i].y * WA * C);
+    // // tangente
+    // T.x -= (Q * v[i].x * v[i].y * WA * S);
+    // T.z -= (Q * v[i].y * v[i].y * WA * S);
+    // T.y += (v[i].y * WA * C);
 
     // normal
     N.x -= (v[i].x * WA * C);
@@ -205,6 +205,8 @@ void main() {
 
 
 
+  r = vec3(normalize(gl_ModelViewMatrix * p));
+
   // Set the position of the current vertex 
-  gl_Position = gl_ModelViewProjectionMatrix * p + ftransform(); //gl_Vertex;
+  gl_Position = gl_ModelViewProjectionMatrix * p + ftransform();
 }

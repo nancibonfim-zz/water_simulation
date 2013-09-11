@@ -16,6 +16,7 @@ varying vec4 p;
 
 void main() {
   gl_TexCoord[0] = gl_MultiTexCoord0;  
+  
   r = vec3(normalize(gl_ModelViewMatrix * gl_Vertex));
   
   p = gl_Vertex;
@@ -94,69 +95,59 @@ void main() {
     
     nondas = 4;
 
-    comp[0] = 4.0;
-    comp[1] = 3.0;
-    comp[2] = 1.0;
-    comp[3] = 0.7;
+    comp[0] = 8.0;
+    comp[1] = 10.0;
+    comp[2] = 2.0;
+    comp[3] = 0.3;
 
     phase[0] = 3.14 / comp[0];
     phase[1] = 3.14 / (2 * comp[1]);
     phase[2] = 3.14 / comp[2];
-    phase[3] = 3.14 / (2 * comp[3]);
+    phase[3] = 3.14 / (3 * comp[3]);
 
-    amplitude[0] = 0.9; 
-    amplitude[1] = 1.6;
+    amplitude[0] = 0.7; 
+    amplitude[1] = 1.2;
     amplitude[2] = 0.5; 
-    amplitude[3] = 0.4;
+    amplitude[3] = 0.2;
 
     v[0] = normalize(vec2(-1.0, 0.0));
-    v[1] = normalize(vec2(-0.95, 0.0));
-    v[2] = normalize(vec2(-1.05, 0.0));
-    v[3] = normalize(vec2(-0.8, 0.0));
+    v[1] = normalize(vec2(-0.95, 0.1));
+    v[2] = normalize(vec2(-1.05, -0.1));
+    v[3] = normalize(vec2(1.1, 0.0));
 
     sharpness[0] = 10.0;
     sharpness[1] = 5.0;
-    sharpness[2] = 10.0;
-    sharpness[3] = 50.0;
+    sharpness[2] = 100.0;
+    sharpness[3] = 20.0;
 
   }
   if ( tipo_mar == 3 ) {
-    nondas = 6;
+    nondas = 4;
 
     comp[0] = 4.0;
-    comp[1] = 8.0;
+    comp[1] = 6.0;
     comp[2] = 16.0;
-    comp[3] = 2.0;
-    comp[4] = 1.0;
-    comp[5] = 32.0;
+    comp[3] = 10.0;
 
     phase[0] = 3.14 / comp[0];
     phase[1] = 3.14 / (3 * comp[1]);
     phase[2] = 3.14 / (3 * comp[2]);
-    phase[3] = 3.14 / comp[3];
-    phase[4] = 3.14 / (1.2 *comp[4]);
-    phase[5] = 3.14 / (comp[5]);
+    phase[3] = 3.14 / 4* comp[3];
 
     amplitude[0] = 0.4;
     amplitude[1] = 0.7;
-    amplitude[2] = 1.0;
-    amplitude[3] = 0.35;
-    amplitude[4] = 1.8;
-    amplitude[5] = 2.3;
+    amplitude[2] = 1.2;
+    amplitude[3] = 2.35;
 
     v[0] = normalize(vec2(-1.0, -0.5));
-    v[1] = normalize(vec2(-1.0, 0.0));
+    v[1] = normalize(vec2(-1.0, 0.1));
     v[2] = normalize(vec2(-1.0, 0.0));
-    v[3] = normalize(vec2(-0.95, -0.5));
-    v[4] = normalize(vec2(-1.0, 0.5));
-    v[5] = normalize(vec2(0.90, 0.0));
+    v[3] = normalize(vec2(-0.95, -0.1));
 
     sharpness[0] = 5.0;
     sharpness[1] = 10.0;
     sharpness[2] = 10.0;
     sharpness[3] = 4.0;
-    sharpness[4] = 3.0;
-    sharpness[5] = 7.0;
  }
 
 

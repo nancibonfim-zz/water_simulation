@@ -16,8 +16,6 @@
    Includes
    ======================================================================= */
 
-#define T2D 1
-
 #include <stdbool.h>
 #include <cstdlib>
 #include <cstdio>
@@ -57,7 +55,7 @@ float t = 0.0;
 
 int situacao_mar = 1; // calmo (1), agitado (2) ou com ondas altas (3)
 
-float posx = 20.0, posy = 10.0, posz = 2.0;
+float posx = 25.0, posy = 50.0, posz = 25.0;
 float eyex = 0.0, eyey = 0.0, eyez = 0.0;
 
 
@@ -84,28 +82,15 @@ void init(void) {
 	
   glEnable(GL_LIGHTING);
 
-#if 0
-  glEnable(GL_LIGHT0);
-	
-  glLightfv(GL_LIGHT0, GL_POSITION, 	pos);
-  glLightfv(GL_LIGHT0, GL_DIFFUSE, 	KdLig);
-  glLightfv(GL_LIGHT0, GL_AMBIENT, 	KaLig);
-  glLightfv(GL_LIGHT0, GL_SPECULAR, 	KeLig);
-
-#else
-  GLfloat pos1[4]   = { -5.0, 20.0, 5.0, 1.0 }; 
-  GLfloat light_direction[] = {0.0, -1.0, -0.0, 0.0};
+  GLfloat pos1[4]   = { 0.0, 60.0, 40.0, 1.0 }; 
+  GLfloat light_direction[] = {0.0, -1.0, -0.4, 0.0};
   glEnable(GL_LIGHT0);
 
-  GLfloat red[4] = {1.0, 0.0, 0.0, 1.0};
   glLightfv(GL_LIGHT0, GL_POSITION, pos1);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, 	KdLig);
   glLightfv(GL_LIGHT0, GL_AMBIENT, 	KdLig);
   glLightfv(GL_LIGHT0, GL_SPECULAR, KeLig);
   glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light_direction);
-#endif
-
-
 }
 
 
@@ -156,11 +141,11 @@ void DesenhaBase(int res) {
    =======================================================================*/
 static void display(void) {
 
-  GLfloat KaMat[4] 	= { 0.01, 0.3, 0.6, 1.0 };
-  GLfloat KdMat[4] 	= { 0.2, 0.3, 0.5, 1.0 }; 
-  GLfloat KeMat[4] 	= { 1.0, 1.0, 1.0, 1.0 }; 
+  GLfloat KaMat[4] 	= { 0.01, 0.33, 0.6, 1.0 };
+  GLfloat KdMat[4] 	= { 0.2, 0.35, 0.5, 1.0 }; 
+  GLfloat KeMat[4] 	= { 0.8, 0.9, 1.0, 1.0 }; 
 
-  GLfloat Shine[1] 	= { 90.0 }; 
+  GLfloat Shine[1] 	= { 30.0 }; 
 
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -173,22 +158,15 @@ static void display(void) {
 
   glMatrixMode (GL_MODELVIEW);
   glLoadIdentity();  
-  //  gluLookAt (50.0, 10.0, 0.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-  //gluLookAt (25.0, 50.0, 25.0, 0.0, -10.0, 0.0, 0.0, 1.0, 0.0);
-      gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  gluLookAt (posx, posy, posz, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
   DesenhaEixos();
 
   glActiveTexture(GL_TEXTURE0);
 
-#if T2D
   glEnable(GL_TEXTURE_2D);
 
   glBindTexture(GL_TEXTURE_2D, texName[0]);
-#else
-  glEnable(GL_TEXTURE_CUBE_MAP);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texName[0]);
-#endif
 
   if (shader) {
     glUseProgram(shaderProg);
@@ -196,6 +174,7 @@ static void display(void) {
     glUniform1i(getUniLoc(shaderProg, "tipo_mar"), situacao_mar);
     
     glUniform1f(getUniLoc(shaderProg, "tempo"), t);
+    glUniform3f(getUniLoc(shaderProg, "worldCameraPos"),  posx, posy, posz);
 
   }
 
@@ -210,15 +189,12 @@ static void display(void) {
   glutSwapBuffers();
 }
 
-int ignoreTimer = false;
-
-
 /* =======================================================================
 
    =======================================================================*/
 void animation(int x) {
 
-  if(!ignoreTimer) {
+  if(run) {
     t += 0.05;
 
     glutTimerFunc(20, animation, NULL);
@@ -242,11 +218,10 @@ static void key(unsigned char keyPressed, int x, int y) {
     break;
   case 'r':
     run = !run;
-    ignoreTimer != ignoreTimer;
-
     if (run)
-      glutTimerFunc(10, animation, NULL);
+      glutTimerFunc(20, animation, NULL);
     break;
+
   case 'S': 
   case 's': shader = !shader;
     if (shader)
@@ -266,31 +241,38 @@ static void key(unsigned char keyPressed, int x, int y) {
     situacao_mar = 3;
     printf("Tempestade com ondas altas\n");
     break;
-  case 'd':
-  case 'D':
-    // if (eyex < 10.0)
-    //   eyex += 1.0;
-    // else
-    //   eyex -= 1.0;
-    //posz += 1.0;
-    //    posy += 1.0;
+  case 'u':
+  case 'U':
+    posx -= 1.0;
+    posz -= 1.0;
+    break;
+
+  case 'o':
+  case 'O':
+    posx += 1.0;
+    posz += 1.0;
+    break;
+
+  case 'j':
+  case 'J':
+    posx -= 1.0;
+    break;
+
+
+  case 'l':
+  case 'L':
+    posx += 1.0;
+    break;
+
+  case 'i':
+  case 'I':
     posy += 1.0;
     printf("posicao: %f %f %f\n", posx, posy, posz);
     
     break;
-  case 'a':
-  case 'A':
-    //    posz -= 1.0;
+  case 'k':
+  case 'K':
     posy -= 1.0;
-    //    posx -= 1.0;
-    
-    
-   // if (eyex > 0.0)
-    //   eyex -= 1.0;
-    // else
-    //   eyex += 1.0;
-    //    posz -= 2.0;
-    // posy -= 2.0;
     break;
   default:
     break;
@@ -320,7 +302,6 @@ static void reshape(int wid, int ht) {
 void initTexture(IplImage*  img) {  
   glGenTextures(1, texName); //gera a textura com os dados carregados
 
-#if T2D
   glBindTexture(GL_TEXTURE_2D, texName[0]); // faz o bind da textura com seu array
   glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); // set texture environment parameters
   
@@ -334,26 +315,6 @@ void initTexture(IplImage*  img) {
   // Gera a textura
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->width, img->height, 0, GL_RGB, 
                GL_UNSIGNED_BYTE, img->imageData);
-#else
-  glBindTexture(GL_TEXTURE_CUBE_MAP, texName[0]); // faz o bind da textura com seu array
-  glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE ); // set texture environment parameters
-
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
-
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, img->width, img->height, 0, GL_RGB, GL_UNSIGNED_BYTE, img->imageData);
-
-
-#endif
 }
 
 
@@ -395,6 +356,8 @@ int main( int argc, char **argv) {
   initShader(shaderFile);
   
   glutMainLoop();
+  glutTimerFunc(10, animation, NULL);
+
 
   return EXIT_SUCCESS;
 }
